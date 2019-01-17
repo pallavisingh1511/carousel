@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
+import Login from './login'
+import style from './../style.less'
 
 class App extends Component {
     render() {
         return(
-            <div>
-                Welcome
+            <div className={ style.container }>
+                <Login />
             </div>
         )
     }
