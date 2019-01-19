@@ -1,1 +1,6 @@
-"# carousel" 
+## Installation
+
+```bash
+npm install
+npm start
+```
