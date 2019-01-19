@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import * as ActionCreator from './LoginActionCreators'
-import Profile from './../profile'
+import Carousel from './../carousel'
 import style from './style.less'
 
 class Login extends Component {
@@ -58,7 +58,7 @@ class Login extends Component {
                         <span className={ style.submitButton } onClick={ () => this._login() }>Login</span>
                         <span className={ style.error }>{ error }</span>
                     </div>
-                    : <Profile user={ this.props.user } />
+                    : <Carousel user={ this.props.user } />
                 }
             </div>
         )

@@ -1,16 +1,21 @@
 import React, { Component, Fragment } from 'react'
-import Slider from "react-slick";
+import { connect } from 'react-redux'
+import Slider from "react-slick"
 import { NUMBERS } from './../../utils/constants'
+import Modal from './../modal'
+import * as ActionCreator from './CarouselActionCreators'
 import style from './style.less'
 
-class Profile extends Component {
+class Carousel extends Component {
     constructor() {
         super()
         this.state = {
-            selectedValue: 1
+            selectedValue: 1,
+            showModal: false
         }
     }
     
+    // _renderCarousel = () => {      
     _renderCarousel() {      
         let slides = []
         for (let i = 1; i <= this.state.selectedValue; i++) {
@@ -35,14 +40,27 @@ class Profile extends Component {
     }
 
     _setSelected(e) {
+        const selectedValue = e.target.value
         this.setState({
-            selectedValue: e.target.value
+            selectedValue: selectedValue
         })
+
+        this.props.dispatch(ActionCreator.update({
+            selectedValue
+        }))
     }
+
+    _showModal() {
+        this.setState({ showModal: true });
+    };
+
+    _hideModal() {
+        this.setState({ showModal: false });
+    };
 
     render() {
         const { user } = this.props
-        
+        console.log(this.props.selection)
         let settings = {
             dots: true,
             infinite: true,
@@ -69,9 +87,31 @@ class Profile extends Component {
                         }
                     </Slider>
                 </div>
+
+                {
+                    Object.keys( this.props.selection).length > 0 &&
+                        <Fragment>
+                            <span className={ style.submitButton } onClick={() => this._showModal()}>FINISH</span>
+                            
+                            <Modal show={ this.state.showModal } handleClose={() => this._hideModal()}>
+                                    <div className={style.modalHeader}>Your selection</div>
+                                {
+                                    this.props.selection.map((value, key) => 
+                                        <div className={ style.count } key={ key }>{ value }</div>
+                                    )
+                                }
+                            </Modal>
+                        </Fragment>
+                }
             </Fragment>
         )
     }
 }
 
-export default Profile
+const mapStateToProps = state => {
+    return {
+        selection: state.carouselReducer.selection,
+    }
+}
+
+export default connect( mapStateToProps )( Carousel )
